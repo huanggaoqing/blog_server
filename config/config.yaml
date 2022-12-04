@@ -1,0 +1,15 @@
+mode: dev
+data_base:
+  host: localhost
+  password: huanggaoqing0119
+  port: 3306
+  dbname: blog
+  user: root
+server:
+  host: localhost
+  port: :8080
+data_pool:
+  max_idle_conns: 10
+  max_open_conns: 100
+  max_lifetime: 1
+
