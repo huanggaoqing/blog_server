@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"blog_server/constant"
+	"blog_server/logger"
 	"blog_server/tools"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -12,7 +13,7 @@ func JWT(ctx *gin.Context) {
 	path := ctx.FullPath()
 	clientType := ctx.GetHeader("clientType")
 	if clientType == constant.CLIENT {
-		constant.BaseWhiteList = append(constant.BaseWhiteList, constant.ClientWhiteLis...)
+		constant.BaseWhiteList = append(constant.BaseWhiteList, constant.ClientWhiteList...)
 	}
 	sort.Strings(constant.BaseWhiteList)
 	idx := sort.SearchStrings(constant.BaseWhiteList, path)
@@ -23,6 +24,7 @@ func JWT(ctx *gin.Context) {
 	token := ctx.GetHeader("Authorization")
 	_, err := tools.VerificationToken(token)
 	if err != nil {
+		logger.Log.Errorf("token校验失败：+%v", err)
 		ctx.JSON(http.StatusOK, err)
 		ctx.Abort()
 	} else {

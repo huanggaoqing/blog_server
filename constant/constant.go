@@ -10,6 +10,6 @@ var BaseWhiteList = []string{
 	"/v1/user/register",
 }
 
-var ClientWhiteLis = []string{
+var ClientWhiteList = []string{
 	"/v1/profile/get",
 }
