@@ -52,7 +52,7 @@ func InitDb() (*gorm.DB, error) {
 	sqlDB.SetConnMaxLifetime(time.Duration(poolConfig.MaxLifetime) * time.Hour)
 
 	// 自动表映射
-	err = db.AutoMigrate(&dbModule.User{}, &dbModule.Role{}, &dbModule.Profile{})
+	err = db.AutoMigrate(&dbModule.User{}, &dbModule.Role{}, &dbModule.Profile{}, &dbModule.Article{})
 	if err != nil {
 		return nil, err
 	}
