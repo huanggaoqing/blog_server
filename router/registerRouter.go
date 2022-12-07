@@ -11,7 +11,7 @@ func RegisterRouter() *gin.Engine {
 	r := gin.Default()
 	swagger.InitSwagger(r)
 	r.Use(middleware.HandleError)
-	r.Use(middleware.JWT)
+	r.Use(middleware.JWT())
 	v1 := r.Group("v1")
 	{
 		registerUserRouter(v1)

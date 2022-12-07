@@ -7,7 +7,9 @@ import (
 	"blog_server/tools"
 )
 
-type UserService struct{}
+type UserService struct {
+	tokenInstance *tools.TokenCore
+}
 
 func (u *UserService) Register(params *dto.UserRegisterRequest) (int, error) {
 	userDao := dao.NewUserDao()
@@ -31,7 +33,7 @@ func (u *UserService) Login(params *dto.UserLoginRequest) (*dto.UserLoginRespons
 	if err != nil {
 		return nil, err
 	}
-	token, err := tools.GenerateToken(user.UserId, user.UserName)
+	token, err := u.tokenInstance.GenerateToken(user.UserId, user.UserName)
 	userData := &dto.UserLoginResponse{
 		UserInfo: &dto.ResponseUserInfo{
 			UserId:      user.UserId,
@@ -45,5 +47,7 @@ func (u *UserService) Login(params *dto.UserLoginRequest) (*dto.UserLoginRespons
 }
 
 func NewUserService() *UserService {
-	return &UserService{}
+	return &UserService{
+		tokenInstance: tools.NewToken(),
+	}
 }

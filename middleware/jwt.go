@@ -9,25 +9,28 @@ import (
 	"sort"
 )
 
-func JWT(ctx *gin.Context) {
-	path := ctx.FullPath()
-	clientType := ctx.GetHeader("clientType")
-	if clientType == constant.CLIENT {
-		constant.BaseWhiteList = append(constant.BaseWhiteList, constant.ClientWhiteList...)
-	}
-	sort.Strings(constant.BaseWhiteList)
-	idx := sort.SearchStrings(constant.BaseWhiteList, path)
-	if idx < len(constant.BaseWhiteList) && constant.BaseWhiteList[idx] == path {
-		ctx.Next()
-		return
-	}
-	token := ctx.GetHeader("Authorization")
-	_, err := tools.VerificationToken(token)
-	if err != nil {
-		logger.Log.Errorf("token校验失败：+%v", err)
-		ctx.JSON(http.StatusOK, err)
-		ctx.Abort()
-	} else {
-		ctx.Next()
+func JWT() func(ctx *gin.Context) {
+	tokenInstance := tools.NewToken()
+	return func(ctx *gin.Context) {
+		path := ctx.FullPath()
+		clientType := ctx.GetHeader("clientType")
+		if clientType == constant.CLIENT {
+			constant.BaseWhiteList = append(constant.BaseWhiteList, constant.ClientWhiteList...)
+		}
+		sort.Strings(constant.BaseWhiteList)
+		idx := sort.SearchStrings(constant.BaseWhiteList, path)
+		if idx < len(constant.BaseWhiteList) && constant.BaseWhiteList[idx] == path {
+			ctx.Next()
+			return
+		}
+		token := ctx.GetHeader("Authorization")
+		_, err := tokenInstance.VerificationToken(token)
+		if err != nil {
+			logger.Log.Errorf("token校验失败：+%v", err)
+			ctx.JSON(http.StatusOK, err)
+			ctx.Abort()
+		} else {
+			ctx.Next()
+		}
 	}
 }

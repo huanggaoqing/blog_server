@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"blog_server/constant"
 	"blog_server/resp"
 	"github.com/dgrijalva/jwt-go"
 	"time"
@@ -12,9 +13,14 @@ type UserClaims struct {
 	*jwt.StandardClaims
 }
 
-var jwtSecret = []byte("myBlog")
+var instance *TokenCore
 
-func GenerateToken(userId int, userName string) (string, error) {
+type TokenCore struct {
+	jwtSecret []byte
+}
+
+// GenerateToken 生成token
+func (t *TokenCore) GenerateToken(userId int, userName string) (string, error) {
 	nowTime := time.Now()
 	claims := &UserClaims{
 		ID:       userId,
@@ -24,16 +30,17 @@ func GenerateToken(userId int, userName string) (string, error) {
 			Issuer:    userName,
 		},
 	}
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(jwtSecret)
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(t.jwtSecret)
 	if err != nil {
 		return "", err
 	}
 	return token, nil
 }
 
-func VerificationToken(token string) (*UserClaims, error) {
+// VerificationToken 验证token
+func (t *TokenCore) VerificationToken(token string) (*UserClaims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
+		return t.jwtSecret, nil
 	})
 	if err != nil {
 		if v, ok := err.(*jwt.ValidationError); ok {
@@ -57,4 +64,13 @@ func VerificationToken(token string) (*UserClaims, error) {
 		}
 	}
 	return nil, resp.TOKEN_INVAILD
+}
+
+func NewToken() *TokenCore {
+	if instance == nil {
+		instance = &TokenCore{
+			jwtSecret: []byte(constant.JwtSecret),
+		}
+	}
+	return instance
 }
