@@ -9,7 +9,7 @@ import (
 	"sort"
 )
 
-func JWT() func(ctx *gin.Context) {
+func JWT() gin.HandlerFunc {
 	tokenInstance := tools.NewToken()
 	return func(ctx *gin.Context) {
 		path := ctx.FullPath()
