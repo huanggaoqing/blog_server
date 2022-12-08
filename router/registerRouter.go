@@ -16,6 +16,7 @@ func RegisterRouter() *gin.Engine {
 	{
 		registerUserRouter(v1)
 		profileRouter(v1)
+		articleRouter(v1)
 	}
 	return r
 }

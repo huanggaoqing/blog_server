@@ -1,7 +1,7 @@
 package dbModule
 
 type Article struct {
-	ArticleId      int    `gorm:"column:article_id;primaryKey;not null;PRECISION:6;AUTO_INCREMENT"`
+	ArticleId      string `gorm:"column:article_id;primaryKey;not null;"`
 	UserId         int    `gorm:"column:user_id;not null"`
 	ArticleContent string `gorm:"column:article_content;not null;type:text;"`
 	ArticleTitle   string `gorm:"column:article_title;not null;"`
