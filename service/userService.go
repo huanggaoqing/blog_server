@@ -33,6 +33,7 @@ func (u *UserService) Login(params *dto.UserLoginRequest) (*dto.UserLoginRespons
 	if err != nil {
 		return nil, err
 	}
+	// TODO 将token存入redis
 	token, err := u.tokenInstance.GenerateToken(user.UserId, user.UserName)
 	userData := &dto.UserLoginResponse{
 		UserInfo: &dto.ResponseUserInfo{

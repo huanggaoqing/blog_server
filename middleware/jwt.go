@@ -24,6 +24,7 @@ func JWT() gin.HandlerFunc {
 			return
 		}
 		token := ctx.GetHeader("Authorization")
+		// TODO 在redis中查找用户对应的token是否存在
 		_, err := tokenInstance.VerificationToken(token)
 		if err != nil {
 			logger.Log.Errorf("token校验失败：+%v", err)
