@@ -2,7 +2,7 @@ package dao
 
 import (
 	"blog_server/db"
-	"blog_server/dto"
+	"blog_server/dto/request"
 	"blog_server/module/dbModule"
 	"blog_server/resp"
 	"gorm.io/gorm"
@@ -20,7 +20,7 @@ func (p *ProfileDao) Save(params *dbModule.Profile) (int, error) {
 	return params.ProfileId, err
 }
 
-func (p *ProfileDao) Get(params *dto.GetProfileRequest) (*dbModule.Profile, error) {
+func (p *ProfileDao) Get(params *request.GetProfileRequest) (*dbModule.Profile, error) {
 	profile := &dbModule.Profile{}
 	err := p.db.Where("user_id = ?", params.UserId).First(profile).Error
 	if err == gorm.ErrRecordNotFound {
@@ -32,7 +32,7 @@ func (p *ProfileDao) Get(params *dto.GetProfileRequest) (*dbModule.Profile, erro
 	return profile, err
 }
 
-func (p *ProfileDao) Set(params *dto.SetProfileRequest) (int, error) {
+func (p *ProfileDao) Set(params *request.SetProfileRequest) (int, error) {
 	profile := &dbModule.Profile{}
 	err := p.db.Model(profile).Where("profile_id = ?", params.ProfileId).Update("content", params.Content).Error
 	if err != nil {

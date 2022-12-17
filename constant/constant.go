@@ -14,4 +14,6 @@ var BaseWhiteList = []string{
 
 var ClientWhiteList = []string{
 	"/v1/profile/get",
+	"/v1/article/get",
+	"/v1/article/detail",
 }

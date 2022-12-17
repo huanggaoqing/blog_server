@@ -1,4 +1,4 @@
-package dto
+package request
 
 type UserRegisterRequest struct {
 	UserName string `json:"userName" binding:"required"` // 用户名
@@ -10,16 +10,4 @@ type UserLoginRequest struct {
 	Type     string `json:"type" binding:"required"`
 	Phone    string `json:"phone" binding:"required"`
 	Password string `json:"password" binding:"required"`
-}
-
-type UserLoginResponse struct {
-	UserInfo *ResponseUserInfo `json:"userInfo"`
-	Token    string            `json:"token"`
-}
-
-type ResponseUserInfo struct {
-	UserId      int    `json:"userId"`
-	UserName    string `json:"userName"`
-	PhoneNumber string `json:"phoneNumber"`
-	Avatar      string `json:"avatar"`
 }

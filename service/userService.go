@@ -2,7 +2,8 @@ package service
 
 import (
 	"blog_server/dao"
-	"blog_server/dto"
+	"blog_server/dto/request"
+	"blog_server/dto/response"
 	"blog_server/resp"
 	"blog_server/tools"
 )
@@ -11,7 +12,7 @@ type UserService struct {
 	tokenInstance *tools.TokenCore
 }
 
-func (u *UserService) Register(params *dto.UserRegisterRequest) (int, error) {
+func (u *UserService) Register(params *request.UserRegisterRequest) (int, error) {
 	userDao := dao.NewUserDao()
 	if user, err := userDao.FindUserByPhone(params.Phone); err != nil {
 		return -1, err
@@ -26,7 +27,7 @@ func (u *UserService) Register(params *dto.UserRegisterRequest) (int, error) {
 	return userId, nil
 }
 
-func (u *UserService) Login(params *dto.UserLoginRequest) (*dto.UserLoginResponse, error) {
+func (u *UserService) Login(params *request.UserLoginRequest) (*response.UserLoginResponse, error) {
 	userDao := dao.NewUserDao()
 	params.Password = tools.Md5(params.Password)
 	user, err := userDao.FindUserByPassword(params)
@@ -35,8 +36,8 @@ func (u *UserService) Login(params *dto.UserLoginRequest) (*dto.UserLoginRespons
 	}
 	// TODO 将token存入redis
 	token, err := u.tokenInstance.GenerateToken(user.UserId, user.UserName)
-	userData := &dto.UserLoginResponse{
-		UserInfo: &dto.ResponseUserInfo{
+	userData := &response.UserLoginResponse{
+		UserInfo: &response.ResponseUserInfo{
 			UserId:      user.UserId,
 			UserName:    user.UserName,
 			PhoneNumber: user.PhoneNumber,

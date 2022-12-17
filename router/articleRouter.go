@@ -10,7 +10,8 @@ func articleRouter(r *gin.RouterGroup) {
 	article := r.Group("/article")
 	{
 		article.POST("/save", articleController.Save)
-		article.GET("/get")
+		article.GET("/get", articleController.GetList)
+		article.GET("/detail", articleController.GetDetail)
 		article.DELETE("/delete")
 		article.PUT("/update")
 		article.PUT("/stick")

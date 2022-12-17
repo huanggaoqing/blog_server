@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"blog_server/dto"
+	"blog_server/dto/request"
 	"blog_server/module/dbModule"
 	"blog_server/resp"
 	"blog_server/service"
@@ -14,7 +14,7 @@ type ProfileController struct {
 }
 
 func (p *ProfileController) Save(ctx *gin.Context) {
-	params := &dto.SaveProfileRequest{}
+	params := &request.SaveProfileRequest{}
 	if err := ctx.ShouldBind(params); err != nil {
 		ctx.Error(resp.PARAMS_ERROR)
 		return
@@ -28,7 +28,7 @@ func (p *ProfileController) Save(ctx *gin.Context) {
 }
 
 func (p *ProfileController) Get(ctx *gin.Context) {
-	params := &dto.GetProfileRequest{}
+	params := &request.GetProfileRequest{}
 	if err := ctx.ShouldBind(params); err != nil {
 		ctx.Error(resp.PARAMS_ERROR)
 		return
@@ -42,7 +42,7 @@ func (p *ProfileController) Get(ctx *gin.Context) {
 }
 
 func (p *ProfileController) Set(ctx *gin.Context) {
-	params := &dto.SetProfileRequest{}
+	params := &request.SetProfileRequest{}
 	if err := ctx.ShouldBind(params); err != nil {
 		ctx.Error(resp.PARAMS_ERROR)
 		return

@@ -1,4 +1,4 @@
-package dto
+package request
 
 type SaveProfileRequest struct {
 	UserId  int    `json:"userId" binding:"required"`

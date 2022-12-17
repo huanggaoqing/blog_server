@@ -1,7 +1,7 @@
 package dbModule
 
 type TagAssociate struct {
-	ArticleId string `gorm:"column:article_id;not null"`
+	ArticleId string `gorm:"column:article_id;not null;index:article_id"`
 	TagId     int    `gorm:"column:tag_id;not null"`
 }
 

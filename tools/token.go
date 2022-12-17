@@ -4,6 +4,7 @@ import (
 	"blog_server/constant"
 	"blog_server/resp"
 	"github.com/dgrijalva/jwt-go"
+	"strings"
 	"time"
 )
 
@@ -26,7 +27,7 @@ func (t *TokenCore) GenerateToken(userId int, userName string) (string, error) {
 		ID:       userId,
 		UserName: userName,
 		StandardClaims: &jwt.StandardClaims{
-			ExpiresAt: nowTime.Add(time.Hour).Unix(),
+			ExpiresAt: nowTime.Add(7 * 24 * time.Hour).Unix(),
 			Issuer:    userName,
 		},
 	}
@@ -39,7 +40,11 @@ func (t *TokenCore) GenerateToken(userId int, userName string) (string, error) {
 
 // VerificationToken 验证token
 func (t *TokenCore) VerificationToken(token string) (*UserClaims, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
+	tokenArr := strings.Split(token, " ")
+	if tokenArr[0] != "Bearer" {
+		return nil, resp.NOT_TOKEN
+	}
+	tokenClaims, err := jwt.ParseWithClaims(tokenArr[1], &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return t.jwtSecret, nil
 	})
 	if err != nil {

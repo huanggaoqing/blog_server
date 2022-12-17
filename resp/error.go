@@ -9,6 +9,7 @@ var (
 	TOKEN_EXPIRED    = NewMyError(401, "token已失效")
 	TOKEN_NOT_ACTIVE = NewMyError(401, "token未激活")
 	NOT_TOKEN        = NewMyError(401, "token格式有误")
+	NOT_ARTICLES     = NewMyError(-1, "暂无文章")
 )
 
 type MyError struct {

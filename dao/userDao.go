@@ -3,7 +3,7 @@ package dao
 import (
 	"blog_server/constant"
 	"blog_server/db"
-	"blog_server/dto"
+	"blog_server/dto/request"
 	"blog_server/module/dbModule"
 	"blog_server/resp"
 	"gorm.io/gorm"
@@ -26,11 +26,11 @@ func (u *UserDao) FindUserByPhone(phoneNumber string) (*dbModule.User, error) {
 	return user, nil
 }
 
-func (u *UserDao) FindUserByPassword(params *dto.UserLoginRequest) (*dbModule.User, error) {
+func (u *UserDao) FindUserByPassword(params *request.UserLoginRequest) (*dbModule.User, error) {
 	user := &dbModule.User{}
 	var err error
 	if params.Type == constant.ADMIN {
-		err = u.db.Model(user).Where("role != ? phone_number = ? AND password = ?", 3, params.Phone, params.Password).First(user).Error
+		err = u.db.Model(user).Where("role != ? AND phone_number = ? AND password = ?", 3, params.Phone, params.Password).First(user).Error
 	} else {
 		err = u.db.Model(user).Where("phone_number = ? AND password = ?", params.Phone, params.Password).First(user).Error
 	}
@@ -43,7 +43,7 @@ func (u *UserDao) FindUserByPassword(params *dto.UserLoginRequest) (*dbModule.Us
 	return user, nil
 }
 
-func (u *UserDao) Create(params *dto.UserRegisterRequest) (int, error) {
+func (u *UserDao) Create(params *request.UserRegisterRequest) (int, error) {
 	user := &dbModule.User{
 		UserName:    params.UserName,
 		Password:    params.Password,

@@ -2,13 +2,13 @@ package service
 
 import (
 	"blog_server/dao"
-	"blog_server/dto"
+	"blog_server/dto/request"
 	"blog_server/module/dbModule"
 )
 
 type ProfileService struct{}
 
-func (p *ProfileService) Save(params *dto.SaveProfileRequest) (int, error) {
+func (p *ProfileService) Save(params *request.SaveProfileRequest) (int, error) {
 	profileDao := dao.NewProfileDao()
 	profileData := &dbModule.Profile{
 		UserId:  params.UserId,
@@ -21,7 +21,7 @@ func (p *ProfileService) Save(params *dto.SaveProfileRequest) (int, error) {
 	return profileId, nil
 }
 
-func (p *ProfileService) Get(params *dto.GetProfileRequest) (*dbModule.Profile, error) {
+func (p *ProfileService) Get(params *request.GetProfileRequest) (*dbModule.Profile, error) {
 	profileDao := dao.NewProfileDao()
 	profile, err := profileDao.Get(params)
 	if err != nil {
@@ -30,7 +30,7 @@ func (p *ProfileService) Get(params *dto.GetProfileRequest) (*dbModule.Profile, 
 	return profile, nil
 }
 
-func (p *ProfileService) Set(params *dto.SetProfileRequest) (int, error) {
+func (p *ProfileService) Set(params *request.SetProfileRequest) (int, error) {
 	profileDao := dao.NewProfileDao()
 	profile, err := profileDao.Set(params)
 	if err != nil {

@@ -1,6 +1,7 @@
 package router
 
 import (
+	"blog_server/logger"
 	"blog_server/middleware"
 	"blog_server/swagger"
 	"github.com/gin-gonic/gin"
@@ -10,9 +11,13 @@ import (
 func RegisterRouter() *gin.Engine {
 	r := gin.Default()
 	swagger.InitSwagger(r)
-	r.Use(middleware.HandleError)
-	r.Use(middleware.JWT())
 	v1 := r.Group("v1")
+	err := fileRouter(v1)
+	if err != nil {
+		logger.Log.Errorf("静态文件路由注册失败%s", err.Error())
+	}
+	v1.Use(middleware.HandleError)
+	v1.Use(middleware.JWT())
 	{
 		registerUserRouter(v1)
 		profileRouter(v1)

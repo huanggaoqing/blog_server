@@ -10,6 +10,11 @@ type Article struct {
 	*Base
 }
 
+type ArticleItem struct {
+	UserName string
+	*Article
+}
+
 func (a *Article) TableName() string {
 	return "blog_article"
 }

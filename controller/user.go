@@ -1,7 +1,8 @@
 package controller
 
 import (
-	"blog_server/dto"
+	"blog_server/dto/request"
+	"blog_server/dto/response"
 	"blog_server/resp"
 	"blog_server/service"
 	"net/http"
@@ -19,7 +20,7 @@ type UserController struct {
 // @Params user body dto.UserRegisterRequest "参数"
 // @Router /v1/user/register [post]
 func (u *UserController) Register(ctx *gin.Context) {
-	params := &dto.UserRegisterRequest{}
+	params := &request.UserRegisterRequest{}
 	if err := ctx.ShouldBind(params); err != nil {
 		ctx.Error(resp.PARAMS_ERROR)
 		return
@@ -33,7 +34,7 @@ func (u *UserController) Register(ctx *gin.Context) {
 }
 
 func (u *UserController) Login(ctx *gin.Context) {
-	params := &dto.UserLoginRequest{}
+	params := &request.UserLoginRequest{}
 	if err := ctx.ShouldBind(params); err != nil {
 		ctx.Error(resp.PARAMS_ERROR)
 		return
@@ -43,7 +44,7 @@ func (u *UserController) Login(ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
-	ctx.JSON(http.StatusOK, resp.NewResponse[*dto.UserLoginResponse](userInfo))
+	ctx.JSON(http.StatusOK, resp.NewResponse[*response.UserLoginResponse](userInfo))
 }
 
 func NewUserController() *UserController {
