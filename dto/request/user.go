@@ -7,7 +7,7 @@ type UserRegisterRequest struct {
 }
 
 type UserLoginRequest struct {
-	Type     string `json:"type" binding:"required"`
+	Type     string `json:"type"  :"required"`
 	Phone    string `json:"phone" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
